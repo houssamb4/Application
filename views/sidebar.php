@@ -66,7 +66,7 @@ if (!$login->isLoggedIn()) {
 }
 
 .nav-label{
-    margin-left: 6px;
+    margin-left: 10px;
 }
 
 .btn-expand-collapse {
@@ -176,10 +176,11 @@ if (!$login->isLoggedIn()) {
   <li>
     <a href="./home.php"><span class="bi bi-house-door-fill"></span><span class="nav-label">Accueil</span></a>
     <a href="./list_users.php"><span class="bi bi-people-fill"></span><span class="nav-label">Utilisateurs</span></a>
-    <a href="#"><span class="glyphicon glyphicon-envelope"></span><span class="nav-label">Profile</span></a>
-    <a href="#"><span class="glyphicon glyphicon-cog"></span><span class="nav-label">Paramètres</span></a>
-    <a href="#"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Notifications</span></a>
-    <a href="#"><span class="glyphicon glyphicon-calendar"></span><span class="nav-label">Moniteur</span></a>
+    <a href="#"><span class="bi bi-person-fill"></span><span class="nav-label">Profile</span></a>
+    <a href="#"><span class="bi bi-person-fill"></span><span class="nav-label">Clients</span></a>
+    <a href="#"><span class="bi bi-gear-fill"></span><span class="nav-label">Paramètres</span></a>
+    <a href="#"><span class="bi bi-bell-fill"></span><span class="nav-label">Notifications</span></a>
+    <a href="#"><span class="bi bi-display-fill"></span><span class="nav-label">Moniteur</span></a>
   </li>
 </ul>
 </nav>
