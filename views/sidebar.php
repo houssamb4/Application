@@ -1,16 +1,30 @@
+<?php
+require_once('../db.php'); 
+require_once('../classes/login.php'); 
+
+$login = new Login($conn);
+
+if (!$login->isLoggedIn()) {
+    header("Location: ../index.php");  
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Dashboard - Sport Academie</title>
-    <link rel="shortcut icon" href="./views/assets/logo.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
 </head>
 <body>
 
 
 <style>
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
     .navbar-global {
   background-color: indigo;
 }
@@ -48,6 +62,11 @@
 
 .navbar-primary.collapsed .nav-label {
   display: none;
+
+}
+
+.nav-label{
+    margin-left: 6px;
 }
 
 .btn-expand-collapse {
@@ -110,6 +129,24 @@
 .collapsed + .main-content {
   margin-left: 60px;
 }
+
+.logonav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logonav a{
+    font-size: 18px;
+    font-weight: 700;
+    font-family: ;
+}
+
+.logo{
+    width: 30px;
+    display: flex;
+    margin-right: 7px;
+}
 </style>
 <nav class="navbar navbar-inverse navbar-global navbar-fixed-top">
     <div class="container-fluid">
@@ -120,12 +157,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Santhosh Vertical Nav Project</a>
-      </div>
+        <div class="logonav">
+        <img class="logo" src="../views/assets/logo.jpg" alt="logo">
+        <a class="navbar-brand" href="./home.php">Sport Académie </a> 
+      </div></div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-user navbar-right">
-          <li><a href="#"><span class="glyphicon glyphicon-user"></span> Santhosh Giridara</a></li>
-          <li><a href="#about"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['first_name']; echo ' '; echo $_SESSION['last_name']; ?></a></li>
+          <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
         </ul>
       </div>
     </div>
@@ -134,7 +173,8 @@
 <a href="#" class="btn-expand-collapse"><span class="glyphicon glyphicon-menu-left"></span></a>
 <ul class="navbar-primary-menu">
   <li>
-    <a href="#"><span class="glyphicon glyphicon-list-alt"></span><span class="nav-label">Dashboard</span></a>
+    <a href="./home.php"><span class="bi bi-house-door-fill"></span><span class="nav-label">Home</span></a>
+    <a href="./list_users.php"><span class="bi bi-people-fill"></span><span class="nav-label">View All Users</span></a>
     <a href="#"><span class="glyphicon glyphicon-envelope"></span><span class="nav-label">Profile</span></a>
     <a href="#"><span class="glyphicon glyphicon-cog"></span><span class="nav-label">Settings</span></a>
     <a href="#"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Notification</span></a>

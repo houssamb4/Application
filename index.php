@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $login->authenticateUser($email, $password);
 
     if ($result === true) {
-        header("Location: dashboard.php");
+        header("Location: ./pages/home.php");
         exit();
     } else {
         echo $result;
