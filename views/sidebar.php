@@ -13,7 +13,7 @@ if (!$login->isLoggedIn()) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard - Sport Academie</title>
+    <title>Tableau de board - Sport Academie</title>
     <link rel="shortcut icon" href="./assets/logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -147,6 +147,7 @@ if (!$login->isLoggedIn()) {
     display: flex;
     margin-right: 7px;
 }
+
 </style>
 <nav class="navbar navbar-inverse navbar-global navbar-fixed-top">
     <div class="container-fluid">
@@ -164,7 +165,7 @@ if (!$login->isLoggedIn()) {
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-user navbar-right">
           <li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['first_name']; echo ' '; echo $_SESSION['last_name']; ?></a></li>
-          <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+          <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a></li>
         </ul>
       </div>
     </div>
@@ -173,12 +174,12 @@ if (!$login->isLoggedIn()) {
 <a href="#" class="btn-expand-collapse"><span class="glyphicon glyphicon-menu-left"></span></a>
 <ul class="navbar-primary-menu">
   <li>
-    <a href="./home.php"><span class="bi bi-house-door-fill"></span><span class="nav-label">Home</span></a>
-    <a href="./list_users.php"><span class="bi bi-people-fill"></span><span class="nav-label">View All Users</span></a>
+    <a href="./home.php"><span class="bi bi-house-door-fill"></span><span class="nav-label">Accueil</span></a>
+    <a href="./list_users.php"><span class="bi bi-people-fill"></span><span class="nav-label">Utilisateurs</span></a>
     <a href="#"><span class="glyphicon glyphicon-envelope"></span><span class="nav-label">Profile</span></a>
-    <a href="#"><span class="glyphicon glyphicon-cog"></span><span class="nav-label">Settings</span></a>
-    <a href="#"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Notification</span></a>
-    <a href="#"><span class="glyphicon glyphicon-calendar"></span><span class="nav-label">Monitor</span></a>
+    <a href="#"><span class="glyphicon glyphicon-cog"></span><span class="nav-label">Paramètres</span></a>
+    <a href="#"><span class="glyphicon glyphicon-film"></span><span class="nav-label">Notifications</span></a>
+    <a href="#"><span class="glyphicon glyphicon-calendar"></span><span class="nav-label">Moniteur</span></a>
   </li>
 </ul>
 </nav>
