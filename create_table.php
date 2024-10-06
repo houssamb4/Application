@@ -12,15 +12,15 @@ if ($conn->connect_error) {
 }
 
 $sql = "
-    CREATE TABLE IF NOT EXISTS users (
-        id INT(11) AUTO_INCREMENT PRIMARY KEY,
-        first_name VARCHAR(50) NOT NULL,
-        last_name VARCHAR(50) NOT NULL,
-        email VARCHAR(100) NOT NULL,
-        role VARCHAR(50) NOT NULL,
-        password VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
+CREATE TABLE Groupe (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    Categorie_id INT NOT NULL,
+    Horaire_id INT NOT NULL,
+    NumeroGroupe VARCHAR(50) NOT NULL,
+    FOREIGN KEY (Categorie_id) REFERENCES Categorie(id),
+    FOREIGN KEY (Horaire_id) REFERENCES Horaire(id) -- Assurez-vous que la table Horaire existe
+);
+
 ";
 
 if ($conn->multi_query($sql) === TRUE) {
