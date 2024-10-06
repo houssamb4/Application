@@ -14,7 +14,7 @@
 	<h1>Login</h1>
     <form method="post">
     	<input type="email" name="email" placeholder="Email" required="required" />
-        <input type="password" name="p" placeholder="Password" required="required" />
+        <input type="password" name="password" placeholder="Password" required="required" />
         <button type="submit" class="btn btn-primary btn-block btn-large">Sign in</button>
     </form>
     <div class="suii"><p>I don't have an account<a href="register.php">Sign Up</a></p></div>

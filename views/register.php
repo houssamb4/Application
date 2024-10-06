@@ -26,7 +26,7 @@
         <button type="submit"  class="btn btn-primary btn-block btn-large">Sign up</button>
     </form>
     <div class="suii">
-        <p>I already have an account <a href="login.php">Sign In</a></p>
+        <p>I already have an account <a href="index.php">Sign In</a></p>
     </div>
 </div>
 
