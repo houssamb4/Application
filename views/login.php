@@ -1,7 +1,7 @@
 <html>
 <head>
 <title>Sport Academie - Sign Up</title>
-<link rel="shortcut icon" href="./assets/logo.jpg" type="image/x-icon">
+<link rel="shortcut icon" href="./views/assets/logo.jpg" type="image/x-icon">
 <style>
     
   <?php

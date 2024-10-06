@@ -10,7 +10,7 @@
 <body>
     <div class="login">
         <h1>Account Created Successfully!</h1>
-        <p>Your account has been created successfully. <a href="../login.php">Click here to login</a>.</p>
+        <p>Your account has been created successfully. <a href="../index.php">Click here to login</a>.</p>
     </div>
 </body>
 </html>
