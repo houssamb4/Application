@@ -1,7 +1,7 @@
 <?php
 include('../views/sidebar.php');
 
-$sql = "SELECT id, first_name, last_name, email, role FROM users";
+$sql = "SELECT id, first_name, last_name, email, role, created_at FROM users";
 $result = $conn->query($sql);
 
 ?>
@@ -12,7 +12,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User List - Sport Academie</title>
+    <title>Liste Admin - Sport Academie</title>
     <link rel="shortcut icon" href="./assets/logo.jpg" type="image/x-icon">
 
     <style>
@@ -38,17 +38,18 @@ $result = $conn->query($sql);
 
     <div class="main-content">
     <div class="container">
-        <h1>User List</h1>
+        <h1>Liste des admins</h1>
 
         <?php if ($result->num_rows > 0): ?>
             <table>
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Prenom</th>
+                        <th>Nom</th>
                         <th>Email</th>
                         <th>Role</th>
+                        <th>date de creation</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,6 +60,7 @@ $result = $conn->query($sql);
                             <td><?php echo $row['last_name']; ?></td>
                             <td><?php echo $row['email']; ?></td>
                             <td><?php echo $row['role']; ?></td>
+                            <td><?php echo $row['created_at']; ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
