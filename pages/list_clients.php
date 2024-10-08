@@ -83,8 +83,7 @@ $conn->close();
             text-align: left;
         }
 
-        th,
-        td {
+        th, td {
             padding: 12px;
             border-bottom: 1px solid #ddd;
         }
@@ -179,7 +178,7 @@ $conn->close();
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                         <input type="submit" name="delete" value="Supprimer">
                                     </form>
-                                    <form method="POST" style="display:inline;">
+                                    <form method="POST" enctype="multipart/form-data" style="display:inline;">
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                         <input type="text" name="nom" placeholder="Nom" value="<?php echo $row['nom']; ?>" required>
                                         <input type="text" name="prenom" placeholder="Prénom" value="<?php echo $row['prenom']; ?>" required>
@@ -187,4 +186,21 @@ $conn->close();
                                         <input type="date" name="Date" value="<?php echo $row['Date']; ?>" required>
                                         <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo $row['telephone']; ?>" required>
                                         <input type="text" name="LieuNaissance" placeholder="Lieu de Naissance" value="<?php echo $row['LieuNaissance']; ?>" required>
-                                        <input type="email" name="email" placeholder="Email"
+                                        <input type="email" name="email" placeholder="Email" value="<?php echo $row['email']; ?>" required>
+                                        <input type="text" name="cin" placeholder="CIN" value="<?php echo $row['cin']; ?>" required>
+                                        <input type="file" name="photo">
+                                        <input type="submit" name="update" value="Modifier">
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p>Aucun client trouvé.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</body>
+
+</html>

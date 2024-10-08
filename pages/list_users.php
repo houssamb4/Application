@@ -1,9 +1,13 @@
 <?php
 include('../views/sidebar.php');
+include('../config/database.php'); // Assurez-vous que le fichier de connexion à la base de données est inclus
 
+// Récupérer la liste des admins
 $sql = "SELECT id, first_name, last_name, email, role, created_at FROM users";
 $result = $conn->query($sql);
 
+// Ferme la connexion à la base de données
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -24,53 +28,74 @@ $result = $conn->query($sql);
             font-size: 18px;
             text-align: left;
         }
+
         th, td {
             padding: 12px;
             border-bottom: 1px solid #ddd;
         }
+
         th {
             background-color: #f2f2f2;
         }
     </style>
+
+    <script>
+        // Fonction JavaScript pour confirmer la suppression
+        function confirmDelete(userId) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur?")) {
+                window.location.href = "delete_user.php?id=" + userId;
+            }
+        }
+    </script>
 </head>
 
 <body>
 
     <div class="main-content">
-    <div class="container">
-        <h1>Liste des admins</h1>
+        <div class="container">
+            <h1>Liste des admins</h1>
 
-        <?php if ($result->num_rows > 0): ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Prenom</th>
-                        <th>Nom</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>date de creation</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while($row = $result->fetch_assoc()): ?>
+            <a href="add_user.php">Ajouter un nouvel admin</a> <!-- Redirection vers la page d'ajout -->
+
+            <?php if ($result->num_rows > 0): ?>
+                <table>
+                    <thead>
                         <tr>
-                            <td><?php echo $row['id']; ?></td>
-                            <td><?php echo $row['first_name']; ?></td>
-                            <td><?php echo $row['last_name']; ?></td>
-                            <td><?php echo $row['email']; ?></td>
-                            <td><?php echo $row['role']; ?></td>
-                            <td><?php echo $row['created_at']; ?></td>
+                            <th>ID</th>
+                            <th>Prénom</th>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Rôle</th>
+                            <th>Date de création</th>
+                            <th>Actions</th>
                         </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>No users found.</p>
-        <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php while($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td><?php echo $row['id']; ?></td>
+                                <td><?php echo $row['first_name']; ?></td>
+                                <td><?php echo $row['last_name']; ?></td>
+                                <td><?php echo $row['email']; ?></td>
+                                <td><?php echo $row['role']; ?></td>
+                                <td><?php echo $row['created_at']; ?></td>
+                                <td>
+                                    <!-- Lien pour modifier l'utilisateur -->
+                                    <a href="edit_user.php?id=<?php echo $row['id']; ?>">Modifier</a>
 
+                                    <!-- Bouton pour supprimer l'utilisateur avec confirmation -->
+                                    <button onclick="confirmDelete(<?php echo $row['id']; ?>)">Supprimer</button>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p>Aucun admin trouvé.</p>
+            <?php endif; ?>
+        </div>
     </div>
-    </div>
+
 </body>
 
 </html>
