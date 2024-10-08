@@ -60,7 +60,7 @@ $clients = $clientManager->listClients();
         }
 
         button {
-            background-color: #dc3545;
+            background-color: green;
             color: white;
             border: none;
             padding: 6px 12px;
@@ -70,7 +70,7 @@ $clients = $clientManager->listClients();
         }
 
         button:hover {
-            background-color: #c82333;
+            background-color: green;
         }
 
         @media (max-width: 768px) {
@@ -91,7 +91,7 @@ $clients = $clientManager->listClients();
 </head>
 <body>
     <div class="container">
-        <h2>List of Clients</h2>
+        <h2>Edit Client</h2>
 
         <table>
             <thead>
@@ -108,6 +108,7 @@ $clients = $clientManager->listClients();
                     <th>Téléphone Père</th>
                     <th>Téléphone Mère</th>
                     <th>Adresse</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -126,6 +127,12 @@ $clients = $clientManager->listClients();
                             <td><?php echo htmlspecialchars($client['TelephonePere']); ?></td>
                             <td><?php echo htmlspecialchars($client['TelephoneMere']); ?></td>
                             <td><?php echo htmlspecialchars($client['Adresse']); ?></td>
+                            <td>
+                                <form action="edit_client.php" method="POST">
+                                    <input type="hidden" name="client_id" value="<?php echo $client['id']; ?>">
+                                    <button type="submit" onclick="return confirm('Are you sure you want to edit this client?');">Edit</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
