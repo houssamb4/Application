@@ -1,9 +1,55 @@
 <?php
 include '../classes/Client.php';
-include('../views/sidebar.php');
+include '../views/sidebar.php';
 
 $clientManager = new Client($conn);
-$clients = $clientManager->listClients();
+
+if (isset($_POST['client_id'])) {
+    $clientId = $_POST['client_id'];
+    echo "Client ID: " . htmlspecialchars($clientId) . "<br>"; 
+    $client = $clientManager->getClientById($clientId); 
+
+    if (!$client) {
+        echo "Client not found.";
+        exit;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_client'])) {
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $dateNaissance = $_POST['DateNaissance'];
+    $telephone = $_POST['telephone'];
+    $lieuNaissance = $_POST['LieuNaissance'];
+    $email = $_POST['email'];
+    $cin = $_POST['cin'];
+    $Adresse = $_POST['Adresse'];
+    $telephonePere = $_POST['TelephonePere'] ?? null;
+    $telephoneMere = $_POST['TelephoneMere'] ?? null;
+
+    $targetDir = "images/";
+    $photoName = basename($_FILES['photo']['name']);
+    $targetFilePath = $targetDir . $photoName;
+
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+        $check = getimagesize($_FILES['photo']['tmp_name']);
+        if ($check !== false) {
+            if (move_uploaded_file($_FILES['photo']['tmp_name'], $targetFilePath)) {
+                $clientManager->updateClient($clientId, $nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $Adresse, $targetFilePath, $telephonePere, $telephoneMere);
+                header('Location: ./list_clients.php'); 
+                exit;
+            } else {
+                echo "Error uploading the photo.";
+            }
+        } else {
+            echo "File is not a valid image.";
+        }
+    } else {
+        $clientManager->updateClient($clientId, $nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $Adresse, $client['photo'], $telephonePere, $telephoneMere);
+        header('Location: ./list_clients.php'); 
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -11,137 +57,54 @@ $clients = $clientManager->listClients();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des clients</title>
+    <title>Edit Client</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        h2 {
-            color: #333;
-            margin-top: 70px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table th, table td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        table th {
-            background-color: #007bff;
-            color: white;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        table td img {
-            border-radius: 50%;
-        }
-
-        button {
-            background-color: green;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: green;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
-                padding: 15px;
-            }
-
-            table th, table td {
-                font-size: 12px;
-            }
-
-            h2 {
-                font-size: 18px;
-            }
+        .container {
+            margin-top: 60px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Edit Client</h2>
+        <form action="edit_client.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="client_id" value="<?php echo htmlspecialchars($client['id']); ?>">
 
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Photo</th>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Date de Naissance</th>
-                    <th>Téléphone</th>
-                    <th>Email</th>
-                    <th>CIN</th>
-                    <th>Lieu de Naissance</th>
-                    <th>Téléphone Père</th>
-                    <th>Téléphone Mère</th>
-                    <th>Adresse</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (count($clients) > 0): ?>
-                    <?php foreach ($clients as $client): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($client['id']); ?></td>
-                            <td><img src="<?php echo htmlspecialchars($client['photo']); ?>" width="50" height="50" alt="Client Photo"></td>
-                            <td><?php echo htmlspecialchars($client['nom']); ?></td>
-                            <td><?php echo htmlspecialchars($client['prenom']); ?></td>
-                            <td><?php echo htmlspecialchars($client['DateNaissance']); ?></td>
-                            <td><?php echo htmlspecialchars($client['telephone']); ?></td>
-                            <td><?php echo htmlspecialchars($client['email']); ?></td>
-                            <td><?php echo htmlspecialchars($client['cin']); ?></td>
-                            <td><?php echo htmlspecialchars($client['LieuNaissance']); ?></td>
-                            <td><?php echo htmlspecialchars($client['TelephonePere']); ?></td>
-                            <td><?php echo htmlspecialchars($client['TelephoneMere']); ?></td>
-                            <td><?php echo htmlspecialchars($client['Adresse']); ?></td>
-                            <td>
-                                <form action="edit_client.php" method="POST">
-                                    <input type="hidden" name="client_id" value="<?php echo $client['id']; ?>">
-                                    <button type="submit" onclick="return confirm('Are you sure you want to edit this client?');">Edit</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="13">No clients found.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+            <label>Nom:</label>
+            <input type="text" name="nom" value="<?php echo htmlspecialchars($client['nom']); ?>" required>
+
+            <label>Prénom:</label>
+            <input type="text" name="prenom" value="<?php echo htmlspecialchars($client['prenom']); ?>" required>
+
+            <label>Date de Naissance:</label>
+            <input type="date" name="DateNaissance" value="<?php echo htmlspecialchars($client['DateNaissance']); ?>" required>
+
+            <label>Téléphone:</label>
+            <input type="text" name="telephone" value="<?php echo htmlspecialchars($client['telephone']); ?>" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" value="<?php echo htmlspecialchars($client['email']); ?>" required>
+
+            <label>CIN:</label>
+            <input type="text" name="cin" value="<?php echo htmlspecialchars($client['cin']); ?>" required>
+
+            <label>Lieu de Naissance:</label>
+            <input type="text" name="LieuNaissance" value="<?php echo htmlspecialchars($client['LieuNaissance']); ?>" required>
+
+            <label>Téléphone Père:</label>
+            <input type="text" name="TelephonePere" value="<?php echo htmlspecialchars($client['TelephonePere']); ?>">
+
+            <label>Téléphone Mère:</label>
+            <input type="text" name="TelephoneMere" value="<?php echo htmlspecialchars($client['TelephoneMere']); ?>">
+
+            <label>Adresse:</label>
+            <input type="text" name="Adresse" value="<?php echo htmlspecialchars($client['Adresse']); ?>" required>
+
+            <label>Photo:</label>
+            <input type="file" name="photo" accept="image/*">
+
+            <button type="submit" name="update_client">Update Client</button>
+        </form>
     </div>
 </body>
 </html>

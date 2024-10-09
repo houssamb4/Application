@@ -232,7 +232,7 @@ if (!$login->isLoggedIn()) {
     <a href="#" class="dropdown-btn"><span class="bi bi-person-fill"></span><span class="nav-label">Clients</span></a>
     <ul class="dropdown-container">
       <li><a href="./create_client.php">Créer Client</a></li>
-      <li><a href="./edit_client.php">Modifier Client</a></li>
+      <li><a href="./get_client.php">Modifier Client</a></li>
       <li><a href="./list_clients.php">Lister Clients</a></li>
       <li><a href="./supprimer_client.php">Supprimer Clients</a></li>
     </ul>

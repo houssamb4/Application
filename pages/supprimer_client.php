@@ -3,8 +3,20 @@ include '../classes/Client.php';
 include('../views/sidebar.php');
 
 $clientManager = new Client($conn);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['client_id'])) {
+    $client_id = $_POST['client_id']; 
+
+    if ($clientManager->deleteClient($client_id)) {
+        echo "Client deleted successfully!";
+    } else {
+        echo "Failed to delete client.";
+    }
+}
+
 $clients = $clientManager->listClients();
 ?>
+>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -128,7 +140,7 @@ $clients = $clientManager->listClients();
                             <td><?php echo htmlspecialchars($client['TelephoneMere']); ?></td>
                             <td><?php echo htmlspecialchars($client['Adresse']); ?></td>
                             <td>
-                                <form action="delete_client.php" method="POST">
+                                <form action="supprimer_client.php" method="POST">
                                     <input type="hidden" name="client_id" value="<?php echo $client['id']; ?>">
                                     <button type="submit" onclick="return confirm('Are you sure you want to delete this client?');">Delete</button>
                                 </form>

@@ -2,7 +2,6 @@
 include '../classes/Client.php';
 include('../views/sidebar.php');
 
-
 $clientManager = new Client($conn);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -13,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lieuNaissance = $_POST['LieuNaissance'];
     $email = $_POST['email'];
     $cin = $_POST['cin'];
+    $Adresse = $_POST['Adresse'];
     $telephonePere = $_POST['TelephonePere'] ?? null;
     $telephoneMere = $_POST['TelephoneMere'] ?? null;
 
@@ -22,23 +22,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
     $check = getimagesize($_FILES['photo']['tmp_name']);
-    if($check !== false) {
-        if(move_uploaded_file($_FILES['photo']['tmp_name'], $targetFilePath)) {
-            $client = new Client($conn);
-            if ($client->createClient($nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $targetFilePath, $telephonePere, $telephoneMere)) {
-                echo "Client created successfully";
+    if ($check !== false) {
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $targetFilePath)) {
+            if ($clientManager->createClient($nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $Adresse, $targetFilePath, $telephonePere, $telephoneMere)) {
+                $message = '<div class="success-message">Client created successfully.</div>';
             } else {
-                echo "Error creating client";
+                $message = '<div class="error-message">Error creating client in the database.</div>';
             }
         } else {
-            echo "Error uploading the photo.";
+            $message = '<div class="error-message">Error uploading the photo. Please check file permissions.</div>';
         }
     } else {
-        echo "File is not an image.";
+        $message = '<div class="error-message">File is not a valid image.</div>';
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -118,6 +117,25 @@ form input[type="file"] {
     padding-left: 0;
 }
 
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+
 form button:active {
     transform: scale(0.98);
 }
@@ -127,6 +145,9 @@ form button:active {
 <body>
     <form action="create_client.php" method="POST" enctype="multipart/form-data">
     <h2>Créer Client</h2>
+    <?php if (!empty($message)): ?>
+            <?php echo $message; ?>
+        <?php endif; ?>
         <input type="text" name="nom" placeholder="Nom" required><br>
         <input type="text" name="prenom" placeholder="Prénom" required><br>
         <label for="">Date de Naissance :</label>
