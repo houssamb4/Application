@@ -196,7 +196,6 @@ if (!$login->isLoggedIn()) {
     background-color: #575757;
 }
 
-/* Show dropdown when clicked */
 .show {
     display: block;
 }

@@ -75,7 +75,7 @@ form {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 800px;
-    margin-top: 70px;
+    margin-top: 200px;
 }
 
 form input[type="text"],
@@ -126,6 +126,7 @@ form button:active {
 </head>
 <body>
     <form action="create_client.php" method="POST" enctype="multipart/form-data">
+    <h2>Créer Client</h2>
         <input type="text" name="nom" placeholder="Nom" required><br>
         <input type="text" name="prenom" placeholder="Prénom" required><br>
         <label for="">Date de Naissance :</label>
