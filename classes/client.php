@@ -57,14 +57,15 @@ class Client {
 
     public function listClients() {
         $query = "SELECT * FROM Client";
-        $stmt = $this->conn->query($query);
+        $result = $this->conn->query($query);
         
-        if ($stmt === false) {
-            die("Query failed: " . implode(":", $this->conn->errorInfo())); 
+        if ($result === false) {
+            die("Query failed: " . $this->conn->error); 
         }
         
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
+    
 
     public function deleteClient($client_id) {
         $query = "DELETE FROM Client WHERE id = :id";
@@ -73,5 +74,6 @@ class Client {
         return $stmt->execute();
     }
 }
+
 
 

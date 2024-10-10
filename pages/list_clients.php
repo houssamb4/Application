@@ -24,13 +24,15 @@ $clients = $clientManager->listClients();
 
         h2 {
             color: #333;
-            margin-top: 70px;
+        }
+
+        .container{
+            margin-right: 200px
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
 
         table th, table td {
@@ -90,6 +92,7 @@ $clients = $clientManager->listClients();
     </style>
 </head>
 <body>
+<div class="main-content">
     <div class="container">
         <h2>List of Clients</h2>
 
@@ -135,6 +138,7 @@ $clients = $clientManager->listClients();
                 <?php endif; ?>
             </tbody>
         </table>
+    </div>
     </div>
 </body>
 </html>
