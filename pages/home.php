@@ -1,3 +1,10 @@
+<?php 
+require '../db.php';
+require '../classes/client.php';
+$client = new Client($conn);
+$totalClients = $client->countClients();
+$totalutilisateur = $client->countutilisateur();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -5,7 +12,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de bord - Sport Academie</title>
-    <link rel="shortcut icon" href="../views/assets/logo.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="../views/assets/logo.png" type="image/x-icon">
 
     
     <style>
@@ -23,31 +30,42 @@
     <div class="stats-overview">
         <div class="stat-box">
             <h2>Total Clients</h2>
-            <p>150</p>
+            <p><?php echo $totalClients;?></p>
         </div>
         <div class="stat-box">
             <h2>Active Subscriptions</h2>
-            <p>120</p>
+            <p>0</p>
         </div>
         <div class="stat-box">
-            <h2>Pending Bills</h2>
-            <p>30</p>
+            <h2>Utilisateur</h2>
+            <p><?php echo $totalutilisateur;?></p>
         </div>
     </div>
 
     <div class="recent-activities">
-        <h2>Recent Activities</h2>
-        <ul>
-            <li>John Doe subscribed for a 6-month membership</li>
-            <li>Mary Jane paid her bill</li>
-            <li>Michael Smith updated his subscription plan</li>
-        </ul>
-    </div>
+    <h2>Activités Récentes</h2>
+    <ul>
+        <?php
+        $query = "SELECT user_id, client_id, activity_description FROM activities ORDER BY activity_date DESC LIMIT 5";
+        $result = $conn->query($query);
+
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                echo "<li>" . htmlspecialchars($row['user_id']) . " - " . htmlspecialchars($row['activity_description']) . "</li>";
+            }
+        } else {
+            echo "<li>Aucune activité récente</li>";
+        }
+        ?>
+    </ul>
+</div>
+
+
 
     <div class="action-buttons">
         <button onclick="window.location.href='create-client.php'">Ajouter un Client</button>
         <button onclick="window.location.href=''">Creer un recu</button>
-        <button onclick="window.location.href='manage-subscriptions.php'">Manage Subscriptions</button>
+        <button onclick="window.location.href=''">Manage Subscriptions</button>
     </div>
 
     </div>

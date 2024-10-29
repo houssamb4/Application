@@ -5,55 +5,41 @@ class Client {
     public function __construct($conn) {
         $this->conn = $conn;
     }
-
+    
     public function getClientById($id) {
-        if (!$this->conn) {
-            echo "Database connection is not established.";
-            return false;
+        $sql = "SELECT * FROM Client WHERE id = ?"; // Corrected here
+        if ($stmt = $this->conn->prepare($sql)) {
+            $stmt->bind_param("i", $id);
+            if ($stmt->execute()) {
+                $result = $stmt->get_result();
+                return $result->fetch_assoc();
+            } else {
+                echo "Error executing query: " . $stmt->error; // for debugging
+            }
+            $stmt->close();
+        } else {
+            echo "Error preparing statement: " . $this->conn->error; // for debugging
         }
-
-        $query = "SELECT * FROM Client WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-
-        if (!$stmt) {
-            echo "Error preparing statement.";
-            return false;
-        }
-
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        if (!$stmt->execute()) {
-            echo "Error executing statement: " . implode(":", $stmt->errorInfo());
-            return false;
-        }
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return null;
     }
+    
 
     public function createClient($nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $Adresse, $photoPath, $telephonePere = null, $telephoneMere = null) {
         $query = "INSERT INTO Client (nom, prenom, DateNaissance, telephone, LieuNaissance, email, cin, Adresse, photo, TelephonePere, TelephoneMere) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         $stmt = $this->conn->prepare($query);
-
+    
         if (!$stmt) {
-            die("Error preparing the SQL statement: " . implode(":", $this->conn->errorInfo()));
+            die("Error preparing the SQL statement: " . $this->conn->error);
         }
-
-        $stmt->bindParam(1, $nom);
-        $stmt->bindParam(2, $prenom);
-        $stmt->bindParam(3, $dateNaissance);
-        $stmt->bindParam(4, $telephone);
-        $stmt->bindParam(5, $lieuNaissance);
-        $stmt->bindParam(6, $email);
-        $stmt->bindParam(7, $cin);
-        $stmt->bindParam(8, $Adresse);
-        $stmt->bindParam(9, $photoPath);
-        $stmt->bindParam(10, $telephonePere);
-        $stmt->bindParam(11, $telephoneMere);
+    
+        $stmt->bind_param("sssssssssss", $nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $Adresse, $photoPath, $telephonePere, $telephoneMere);
         
         $result = $stmt->execute();
         
         return $result;
     }
+    
 
     public function listClients() {
         $query = "SELECT * FROM Client";
@@ -73,6 +59,50 @@ class Client {
         $stmt->bindParam(':id', $client_id, PDO::PARAM_INT); 
         return $stmt->execute();
     }
+
+    public function countClients() {
+        $query = "SELECT COUNT(*) as total FROM Client";
+        $result = $this->conn->query($query);
+    
+        if ($result === false) {
+            die("Query failed: " . $this->conn->error);
+        }
+    
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+    
+    public function countutilisateur() {
+        $query = "SELECT COUNT(*) as total FROM users";
+        $result = $this->conn->query($query);
+    
+        if ($result === false) {
+            die("Query failed: " . $this->conn->error);
+        }
+    
+        $row = $result->fetch_assoc();
+        return $row['total'];
+    }
+
+    public function updateClient($id, $nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $adresse, $photo, $telephonePere = null, $telephoneMere = null) {
+        $sql = "UPDATE client SET nom=?, prenom=?, DateNaissance=?, telephone=?, LieuNaissance=?, email=?, cin=?, Adresse=?, photo=?, TelephonePere=?, TelephoneMere=? WHERE id=?";
+        
+        if ($stmt = $this->conn->prepare($sql)) {
+            $stmt->bind_param("sssssssssssi", $nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $adresse, $photo, $telephonePere, $telephoneMere, $id);
+            
+            if ($stmt->execute()) {
+                $stmt->close();
+                return true; // Return true if update is successful
+            } else {
+                echo "Error updating record: " . $stmt->error; // Debugging output
+            }
+        } else {
+            echo "Error preparing statement: " . $this->conn->error; // Debugging output
+        }
+        
+        return false; // Return false if update fails
+    }
+
 }
 
 

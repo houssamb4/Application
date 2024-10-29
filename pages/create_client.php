@@ -74,7 +74,7 @@ form {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 800px;
-    margin-top: 200px;
+    margin-top: 280px;
 }
 
 form input[type="text"],
@@ -143,6 +143,8 @@ form button:active {
     </style>
 </head>
 <body>
+<div class="main-content">
+
     <form action="create_client.php" method="POST" enctype="multipart/form-data">
     <h2>Créer Client</h2>
     <?php if (!empty($message)): ?>
@@ -165,5 +167,6 @@ form button:active {
         <input type="text" name="Adresse" placeholder="Adresse" required><br>
         <button type="submit">Create Client</button>
     </form>
+</div>
 </body>
 </html>

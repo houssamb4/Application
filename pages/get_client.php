@@ -30,10 +30,14 @@ $clients = $clientManager->listClients();
         .container{
             margin-top: 60px;
         }
+        .edit{
+            color:blue;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+=    <div class="main-content">
         <h2>Client List</h2>
         <table>
             <thead>
@@ -53,15 +57,13 @@ $clients = $clientManager->listClients();
                         <td><?php echo htmlspecialchars($client['prenom']); ?></td>
                         <td><?php echo htmlspecialchars($client['email']); ?></td>
                         <td>
-                        <form action="edit_client.php" method="POST">
-                          <input type="hidden" name="client_id" value="<?php echo htmlspecialchars($client['id']); ?>">
-                         <button type="submit" name="edit_client">Modifier</button>
-                        </form>
+                        <a class="edit" href="edit_client.php?id=<?php echo $client['id']; ?>">Edit</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
+    </div>
     </div>
 </body>
 </html>

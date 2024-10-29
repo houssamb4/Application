@@ -14,7 +14,7 @@ if (!$login->isLoggedIn()) {
 <html>
 <head>
     <title>Tableau de board - Sport Academie</title>
-    <link rel="shortcut icon" href="./assets/logo.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -143,9 +143,8 @@ if (!$login->isLoggedIn()) {
 }
 
 .logo{
-    width: 30px;
+    width: 40px;
     display: flex;
-    margin-right: 7px;
 }
 
 .navbar-primary-menu {
@@ -212,7 +211,7 @@ if (!$login->isLoggedIn()) {
           <span class="icon-bar"></span>
         </button>
         <div class="logonav">
-        <img class="logo" src="../views/assets/logo.jpg" alt="logo">
+        <img class="logo" src="../views/assets/logo.png" alt="logo">
         <a class="navbar-brand" href="./home.php">Sport Académie </a> 
       </div></div>
       <div id="navbar" class="collapse navbar-collapse">

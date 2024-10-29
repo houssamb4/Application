@@ -30,16 +30,12 @@ $clients = $clientManager->listClients();
             margin-right: 200px
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+
 
         table th, table td {
-            padding: 12px;
+            padding: 1px;
             border: 1px solid #ddd;
             text-align: left;
-            font-size: 14px;
         }
 
         table th {

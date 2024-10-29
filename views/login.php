@@ -11,6 +11,7 @@
 
 <body>
     <div class="login">
+    <img src="./views/assets/logo_header.jpg" alt="logo">
         <h1>Se connecter</h1>
         <form method="post">
             <input type="email" name="email" placeholder="Email" required="required" />
