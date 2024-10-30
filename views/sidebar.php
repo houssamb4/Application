@@ -14,7 +14,7 @@ if (!$login->isLoggedIn()) {
 <html>
 <head>
     <title>Tableau de board - Sport Academie</title>
-    <link rel="shortcut icon" href="./assets/logo.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -143,10 +143,62 @@ if (!$login->isLoggedIn()) {
 }
 
 .logo{
-    width: 30px;
+    width: 40px;
     display: flex;
-    margin-right: 7px;
 }
+
+.navbar-primary-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 250px;
+    background-color: #333;
+}
+
+.navbar-primary-menu li {
+    position: relative;
+}
+
+.navbar-primary-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.navbar-primary-menu a:hover {
+    background-color: #575757;
+}
+
+.dropdown-btn {
+    cursor: pointer;
+}
+
+.dropdown-container {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-container li {
+    background-color: #444;
+}
+
+.dropdown-container a {
+    padding-left: 20px;
+}
+
+.dropdown-container a:hover {
+    background-color: #575757;
+}
+
+.show {
+    display: block;
+}
+
 
 </style>
 <nav class="navbar navbar-inverse navbar-global navbar-fixed-top">
@@ -159,13 +211,13 @@ if (!$login->isLoggedIn()) {
           <span class="icon-bar"></span>
         </button>
         <div class="logonav">
-        <img class="logo" src="../views/assets/logo.jpg" alt="logo">
+        <img class="logo" src="../views/assets/logo.png" alt="logo">
         <a class="navbar-brand" href="./home.php">Sport Académie </a> 
       </div></div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-user navbar-right">
           <li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo $_SESSION['first_name']; echo ' '; echo $_SESSION['last_name']; ?></a></li>
-          <li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a></li>
+          <li><a href="../logout.php"><span class="glyphicon glyphicon-log-out"></span> Se déconnecter</a></li>
         </ul>
       </div>
     </div>
@@ -176,8 +228,33 @@ if (!$login->isLoggedIn()) {
   <li>
     <a href="./home.php"><span class="bi bi-house-door-fill"></span><span class="nav-label">Accueil</span></a>
     <a href="./list_users.php"><span class="bi bi-people-fill"></span><span class="nav-label">Utilisateurs</span></a>
+    <a href="#" class="dropdown-btn"><span class="bi bi-person-fill"></span><span class="nav-label">Clients</span></a>
+    <ul class="dropdown-container">
+      <li><a href="./create_client.php">Créer Client</a></li>
+      <li><a href="./get_client.php">Modifier Client</a></li>
+      <li><a href="./list_clients.php">Lister Clients</a></li>
+      <li><a href="./supprimer_client.php">Supprimer Clients</a></li>
+    </ul>
+
+    <a href="#" class="dropdown-btn"><span class="bi bi-file-earmark-fill"></span><span class="nav-label">Abonnements</span></a>
+    <ul class="dropdown-container">
+      <li><a href="./create_abonnement.php">Créer Abonnement</a></li>
+      <li><a href="./list_abonnements.php">Lister Abonnements</a></li>
+    </ul>
+
+    <a href="#" class="dropdown-btn"><span class="bi bi-cash-coin"></span><span class="nav-label">Recettes</span></a>
+    <ul class="dropdown-container">
+      <li><a href="./create_recette.php">Créer Recette</a></li>
+      <li><a href="./list_recettes.php">Lister Recettes</a></li>
+    </ul>
+
+    <a href="#" class="dropdown-btn"><span class="bi bi-folder-fill"></span><span class="nav-label">Catégories</span></a>
+    <ul class="dropdown-container">
+      <li><a href="./create_categorie.php">Créer Catégorie</a></li>
+      <li><a href="./list_categories.php">Lister Catégories</a></li>
+    </ul>
+
     <a href="#"><span class="bi bi-person-fill"></span><span class="nav-label">Profile</span></a>
-    <a href="#"><span class="bi bi-person-fill"></span><span class="nav-label">Clients</span></a>
     <a href="#"><span class="bi bi-gear-fill"></span><span class="nav-label">Paramètres</span></a>
     <a href="#"><span class="bi bi-bell-fill"></span><span class="nav-label">Notifications</span></a>
     <a href="#"><span class="bi bi-display-fill"></span><span class="nav-label">Moniteur</span></a>
@@ -188,5 +265,12 @@ if (!$login->isLoggedIn()) {
 <script>
     $('.btn-expand-collapse').click(function(e) {
 	$('.navbar-primary').toggleClass('collapsed');
+    });
+
+    document.querySelectorAll('.dropdown-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const dropdownContent = this.nextElementSibling;
+            dropdownContent.classList.toggle('show');
+        });
     });
 </script>

@@ -28,10 +28,10 @@ class Login {
 
                     return true; 
                 } else {
-                    return "Incorrect password.";
+                    return "<p class='error'>Incorrect password</p>";
                 }
             } else {
-                return "No account found with this email.";
+                return "<p class='error'>No account found with this email</p>";
             }
 
             $stmt->close();

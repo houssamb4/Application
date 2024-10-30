@@ -1,117 +1,91 @@
 <?php
+include '../classes/Client.php';
 include('../views/sidebar.php');
-include('../config/database.php'); // Assurez-vous que le fichier de connexion à la base de données est inclus
 
-// Récupérer les clients
-$sql = "SELECT id, nom, prenom, DateNaissance, Date, telephone, LieuNaissance, email, cin, photo, TelephonePere, TelephoneMere, Adresse FROM Client";
-$result = $conn->query($sql);
-
-// Traitement de l'ajout, modification et suppression
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ajout d'un nouveau client
-    if (isset($_POST['add'])) {
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
-        $DateNaissance = $_POST['DateNaissance'];
-        $Date = $_POST['Date'];
-        $telephone = $_POST['telephone'];
-        $LieuNaissance = $_POST['LieuNaissance'];
-        $email = $_POST['email'];
-        $cin = $_POST['cin'];
-        $photo = $_FILES['photo']['name'];
-        move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/$photo"); // Déplacez la photo dans le dossier uploads
-        $TelephonePere = $_POST['TelephonePere'];
-        $TelephoneMere = $_POST['TelephoneMere'];
-        $Adresse = $_POST['Adresse'];
-
-        $insert_sql = "INSERT INTO Client (nom, prenom, DateNaissance, Date, telephone, LieuNaissance, email, cin, photo, TelephonePere, TelephoneMere, Adresse) 
-                       VALUES ('$nom', '$prenom', '$DateNaissance', '$Date', '$telephone', '$LieuNaissance', '$email', '$cin', '$photo', '$TelephonePere', '$TelephoneMere', '$Adresse')";
-        $conn->query($insert_sql);
-    }
-    // Suppression d'un client
-    elseif (isset($_POST['delete'])) {
-        $id = $_POST['id'];
-        $delete_sql = "DELETE FROM Client WHERE id = $id";
-        $conn->query($delete_sql);
-    }
-    // Modification d'un client
-    elseif (isset($_POST['update'])) {
-        $id = $_POST['id'];
-        $nom = $_POST['nom'];
-        $prenom = $_POST['prenom'];
-        $DateNaissance = $_POST['DateNaissance'];
-        $Date = $_POST['Date'];
-        $telephone = $_POST['telephone'];
-        $LieuNaissance = $_POST['LieuNaissance'];
-        $email = $_POST['email'];
-        $cin = $_POST['cin'];
-        $photo = $_FILES['photo']['name'];
-        
-        // Si une nouvelle photo est téléchargée
-        if ($photo) {
-            move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/$photo");
-            $update_sql = "UPDATE Client SET nom='$nom', prenom='$prenom', DateNaissance='$DateNaissance', Date='$Date', telephone='$telephone', 
-                           LieuNaissance='$LieuNaissance', email='$email', cin='$cin', photo='$photo' WHERE id = $id";
-        } else {
-            $update_sql = "UPDATE Client SET nom='$nom', prenom='$prenom', DateNaissance='$DateNaissance', Date='$Date', telephone='$telephone', 
-                           LieuNaissance='$LieuNaissance', email='$email', cin='$cin' WHERE id = $id";
-        }
-        $conn->query($update_sql);
-    }
-}
-
-// Ferme la connexion à la base de données
-$conn->close();
+$clientManager = new Client($conn);
+$clients = $clientManager->listClients();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des Clients - Sport Academie</title>
-    <link rel="shortcut icon" href="./assets/logo.jpg" type="image/x-icon">
-
+    <title>Liste des clients</title>
     <style>
-        <?php echo file_get_contents('../assets/main.css'); ?>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 25px 0;
-            font-size: 18px;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .container{
+            margin-right: 200px
+        }
+
+
+
+        table th, table td {
+            padding: 1px;
+            border: 1px solid #ddd;
             text-align: left;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             border-bottom: 1px solid #ddd;
         }
 
-        th {
-            background-color: #f2f2f2;
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
-        .form-container {
-            margin: 20px 0;
+        table tr:hover {
+            background-color: #f1f1f1;
         }
 
-        .form-container input,
-        .form-container select {
-            margin: 5px;
-            padding: 10px;
-            width: 200px;
+        table td img {
+            border-radius: 50%;
         }
 
-        .form-container textarea {
-            margin: 5px;
-            padding: 10px;
-            width: 200px;
-            height: 60px;
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            table th, table td {
+                font-size: 12px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
-
 <body>
 
     <div class="main-content">
@@ -178,7 +152,7 @@ $conn->close();
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                         <input type="submit" name="delete" value="Supprimer">
                                     </form>
-                                    <form method="POST" enctype="multipart/form-data" style="display:inline;">
+                                    <form method="POST" style="display:inline;">
                                         <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
                                         <input type="text" name="nom" placeholder="Nom" value="<?php echo $row['nom']; ?>" required>
                                         <input type="text" name="prenom" placeholder="Prénom" value="<?php echo $row['prenom']; ?>" required>
@@ -186,21 +160,4 @@ $conn->close();
                                         <input type="date" name="Date" value="<?php echo $row['Date']; ?>" required>
                                         <input type="text" name="telephone" placeholder="Téléphone" value="<?php echo $row['telephone']; ?>" required>
                                         <input type="text" name="LieuNaissance" placeholder="Lieu de Naissance" value="<?php echo $row['LieuNaissance']; ?>" required>
-                                        <input type="email" name="email" placeholder="Email" value="<?php echo $row['email']; ?>" required>
-                                        <input type="text" name="cin" placeholder="CIN" value="<?php echo $row['cin']; ?>" required>
-                                        <input type="file" name="photo">
-                                        <input type="submit" name="update" value="Modifier">
-                                    </form>
-                                </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p>Aucun client trouvé.</p>
-            <?php endif; ?>
-        </div>
-    </div>
-</body>
-
-</html>
+                                        <input type="email" name="email" placeholder="Email"
