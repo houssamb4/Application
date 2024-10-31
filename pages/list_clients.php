@@ -33,7 +33,7 @@ $clients = $clientManager->listClients();
 
 
         table th, table td {
-            padding: 1px;
+            padding: 10px;
             border: 1px solid #ddd;
             text-align: left;
         }
@@ -99,40 +99,40 @@ $clients = $clientManager->listClients();
                     <th>Photo</th>
                     <th>Nom</th>
                     <th>Prénom</th>
-                    <th>Date de Naissance</th>
                     <th>Téléphone</th>
                     <th>Email</th>
-                    <th>CIN</th>
-                    <th>Lieu de Naissance</th>
-                    <th>Téléphone Père</th>
-                    <th>Téléphone Mère</th>
-                    <th>Adresse</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php if (count($clients) > 0): ?>
-                    <?php foreach ($clients as $client): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($client['id']); ?></td>
-                            <td><img src="<?php echo htmlspecialchars($client['photo']); ?>" width="50" height="50" alt="Client Photo"></td>
-                            <td><?php echo htmlspecialchars($client['nom']); ?></td>
-                            <td><?php echo htmlspecialchars($client['prenom']); ?></td>
-                            <td><?php echo htmlspecialchars($client['DateNaissance']); ?></td>
-                            <td><?php echo htmlspecialchars($client['telephone']); ?></td>
-                            <td><?php echo htmlspecialchars($client['email']); ?></td>
-                            <td><?php echo htmlspecialchars($client['cin']); ?></td>
-                            <td><?php echo htmlspecialchars($client['LieuNaissance']); ?></td>
-                            <td><?php echo htmlspecialchars($client['TelephonePere']); ?></td>
-                            <td><?php echo htmlspecialchars($client['TelephoneMere']); ?></td>
-                            <td><?php echo htmlspecialchars($client['Adresse']); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="13">No clients found.</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
+    <?php if (count($clients) > 0): ?>
+        <?php foreach ($clients as $client): ?>
+            <tr>
+                <td><?php echo htmlspecialchars($client['id'] ?? 'N/A'); ?></td>
+                <td>
+                    <?php 
+                        $imagePath = !empty($client['photo']) && file_exists($client['photo']) 
+                                     ? htmlspecialchars($client['photo']) 
+                                     : './images/default_client.png'; 
+                    ?>
+                    <img src="<?php echo $imagePath; ?>" width="50" height="50" alt="Client Photo">
+                </td>
+                <td><?php echo htmlspecialchars($client['nom'] ?? 'N/A'); ?></td>
+                <td><?php echo htmlspecialchars($client['prenom'] ?? 'N/A'); ?></td>
+                <td><?php echo htmlspecialchars($client['telephone'] ?? 'N/A'); ?></td>
+                <td><?php echo htmlspecialchars($client['email'] ?? 'N/A'); ?></td>
+                <td>
+                        <a href="view_client.php?id=<?php echo htmlspecialchars($client['id']); ?>" class="view-button">View</a>
+                    </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="13">No clients found.</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
+
         </table>
     </div>
     </div>
