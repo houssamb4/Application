@@ -54,11 +54,21 @@ class Client {
     
 
     public function deleteClient($client_id) {
-        $query = "DELETE FROM Client WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $client_id, PDO::PARAM_INT); 
-        return $stmt->execute();
+        $stmt = $this->conn->prepare("DELETE FROM Client WHERE id = ?");
+    
+        if (!$stmt) {
+            die("Preparation failed: " . $this->conn->error); // Output error and stop execution
+        }
+    
+        $stmt->bind_param("i", $client_id);
+    
+        if ($stmt->execute()) {
+            return true;  
+        } else {
+            return false; 
+        }
     }
+    
 
     public function countClients() {
         $query = "SELECT COUNT(*) as total FROM Client";
@@ -87,21 +97,35 @@ class Client {
     public function updateClient($id, $nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $adresse, $photo, $telephonePere = null, $telephoneMere = null) {
         $sql = "UPDATE client SET nom=?, prenom=?, DateNaissance=?, telephone=?, LieuNaissance=?, email=?, cin=?, Adresse=?, photo=?, TelephonePere=?, TelephoneMere=? WHERE id=?";
         
+        echo "Preparing to update client with ID: $id <br>";
+        
         if ($stmt = $this->conn->prepare($sql)) {
+            echo "Statement prepared successfully. <br>";
+            
             $stmt->bind_param("sssssssssssi", $nom, $prenom, $dateNaissance, $telephone, $lieuNaissance, $email, $cin, $adresse, $photo, $telephonePere, $telephoneMere, $id);
+            echo "Parameters bound successfully. <br>";
             
             if ($stmt->execute()) {
-                $stmt->close();
-                return true; // Return true if update is successful
+                echo "Query executed successfully. <br>";
+                
+                if ($stmt->affected_rows > 0) {
+                    echo "Update successful, {$stmt->affected_rows} rows affected. <br>";
+                    $stmt->close();
+                    return true; // Return true if update is successful and a row was affected
+                } else {
+                    echo "No rows updated. This could mean the data was already up-to-date or the ID was incorrect.<br>";
+                }
             } else {
-                echo "Error updating record: " . $stmt->error; // Debugging output
+                echo "Error executing update: " . $stmt->error . "<br>"; // Error message if execution fails
             }
         } else {
-            echo "Error preparing statement: " . $this->conn->error; // Debugging output
+            echo "Error preparing statement: " . $this->conn->error . "<br>"; // Error if statement preparation fails
         }
         
-        return false; // Return false if update fails
+        return false; 
     }
+    
+    
 
 }
 

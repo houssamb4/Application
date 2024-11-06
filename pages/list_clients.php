@@ -85,6 +85,34 @@ $clients = $clientManager->listClients();
                 font-size: 18px;
             }
         }
+
+        .view-button, .edit-button, .delete-button {
+    padding: 8px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.view-button {
+    background-color: #007bff;
+}
+
+.edit-button {
+    background-color: #28a745;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+
+.view-button:hover, .edit-button:hover, .delete-button:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
     </style>
 </head>
 <body>
@@ -122,8 +150,10 @@ $clients = $clientManager->listClients();
                 <td><?php echo htmlspecialchars($client['telephone'] ?? 'N/A'); ?></td>
                 <td><?php echo htmlspecialchars($client['email'] ?? 'N/A'); ?></td>
                 <td>
-                        <a href="view_client.php?id=<?php echo htmlspecialchars($client['id']); ?>" class="view-button">View</a>
-                    </td>
+                   <a href="view_client.php?id=<?php echo htmlspecialchars($client['id']); ?>" class="view-button">Détails</a>
+                   <a href="edit_client.php?id=<?php echo htmlspecialchars($client['id']); ?>" class="edit-button">Modifier</a>
+                    <a href="delete_client.php?id=<?php echo htmlspecialchars($client['id']); ?>" class="delete-button">Supprimer</a>
+                </td>
             </tr>
         <?php endforeach; ?>
     <?php else: ?>

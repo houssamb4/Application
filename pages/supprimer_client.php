@@ -6,6 +6,7 @@ $clientManager = new Client($conn);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['client_id'])) {
     $client_id = $_POST['client_id']; 
+    
 
     if ($clientManager->deleteClient($client_id)) {
         echo "Client deleted successfully!";
